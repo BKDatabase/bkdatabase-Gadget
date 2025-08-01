@@ -1,0 +1,52 @@
+/* Nút radio trong phần Gõ tiếng Việt */
+#p-avim ul {
+    margin-left: 0em;
+    padding-left: 0em;
+    list-style: none;
+}
+
+#p-avim .body
+{
+    margin-left:0.5em;
+}
+#p-avim .body small,
+#p-avim .body a {
+    font-size: 0.8em !important;
+}
+
+/* Minerva */
+.skin-minerva #p-avim {
+	padding: 1em;
+}
+
+.skin-minerva #p-avim > .pBody {
+	font-size: 0.875rem;
+	color: var(--color-subtle);
+}
+
+/* Vectơ */
+
+/* Đường vạch ngang trong phần Gõ tiếng Việt */
+body.skin-vector #mw-panel > .portal > .body hr {
+	border-style: none;
+	background-position: top right;
+	background-repeat: no-repeat;
+	background-image: -webkit-gradient(linear, left top, right top, color-stop(80%, #d8d8d8), color-stop(100%, #f2f2f2));
+	background-image: -webkit-linear-gradient(left, #d8d8d8 80%, #f2f2f2);
+	background-image: -moz-linear-gradient(left, #d8d8d8 80%, #f2f2f2);
+	background-image: -ms-linear-gradient(left, #d8d8d8 80%, #f2f2f2);
+	background-image: -o-linear-gradient(left, #d8d8d8 80%, #f2f2f2);
+	background-image: linear-gradient(to right, #d8d8d8 80%, #f2f2f2);
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#d8d8d8', endColorstr='#f2f2f2')";
+}
+
+/* Vọng cổ */
+body.skin-nostalgia #p-avim li {
+    display: inline;
+    list-style-type: none;
+    margin-right: 1em;
+}
+
+body.skin-nostalgia #p-avim hr {
+    display: inline;
+}

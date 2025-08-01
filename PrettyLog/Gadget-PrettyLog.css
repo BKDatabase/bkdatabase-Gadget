@@ -1,0 +1,17 @@
+/* Special:Search styles */
+ 
+.mw-search-results li{
+ padding: 0.25em 1em;
+ border-bottom: 1px solid #d3daed;
+ background: #f6f8fc;
+}
+.mw-search-results li:nth-child(odd) {
+ background: #f6f8fc;
+}
+.mw-search-results li:nth-child(even) {
+ background: #fcfcfc;
+}
+ 
+.mw-search-results table {
+ background: transparent;
+}

@@ -1,0 +1,34 @@
+/**
+ * Explicitly set width of the UTC-clock list element, so that we can use a
+ * hidden peer gadget to add space where the clock would go before it loads.
+ */
+.skin-vector #utcdate {
+	width: 6em;
+	/* 
+	 * The default margin-left is 0.75em, but set it again here explicitly, so
+	 * we can be sure of the exact width.
+	 */ 
+	margin-left: 0.75em;
+}
+
+/**
+ * Vector-2022:
+ * The header is not designed to hold too many items (see T301583#7712430) so push down to new line.
+ */
+@media screen and (min-width: 1200px ) {
+	#p-personal-more #utcdate {
+		position: absolute;
+		top: 60px;
+		right: 0;
+	}
+}
+
+.skin-monobook #utcdate {
+	width: 6.279em;
+	display: inline-block; /* We need this for the width property to work */
+	/* 
+	 * The default margin-left is 1em, but set it again here explicitly, so
+	 * we can be sure of the exact width.
+	 */ 
+	margin-left: 1em;
+}

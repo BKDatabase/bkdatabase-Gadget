@@ -1,0 +1,73 @@
+/* <pre> */
+/* *****************
+   rc sidebar widget
+   ***************** */
+
+#p-RecentChanges {
+	min-height: 11.3em;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+#p-RecentChanges h3::after {
+	content: '';
+	position: relative;
+	left: .5em;
+
+	display: inline-block;
+	background-color: #56b30a;
+	width: 6px;
+	height: 6px;
+	border-radius: 100%;
+	
+	animation: blink 5s linear infinite;
+}
+
+.rc-sidebar-item {
+	position: relative;
+	font-size: 0.75em;
+	margin: .5em .25em 0 .66em;
+}
+
+.rc-sidebar-item::before {
+	position: absolute;
+	left: -0.75em;
+	top: .5em;
+
+	/* content: ''; */
+	background-color: #327ba7;
+	width: 4px;
+	height: 4px;
+	border-radius: 100%;
+}
+
+.rc-sidebar-page {
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-width: max-content;
+}
+
+.rc-sidebar-user {
+    color: #555;
+    margin: 0;
+    white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.rc-sidebar-user a {
+	color: inherit;
+}
+#p-RecentChanges .rc-sidebar-more {
+	text-align: right;
+}
+
+#p-RecentChanges .rc-sidebar-more .rc-sidebar-page {
+	display:inline-block;
+}

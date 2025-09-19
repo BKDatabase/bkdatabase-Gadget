@@ -1,0 +1,45 @@
+/* CITIZEN CONFIG */
+.skin-citizen #wikitext-extension-gadget-vscode,
+.skin-citizen #wikitext-extension-gadget-vscode-insiders,
+.skin-citizen #wikitext-extension-gadget-vscodium {
+	order: 97; /* Before Edit/VisualEditor buttons */
+}
+
+.skin-citizen #wikitext-extension-gadget-vscode a:before,
+.skin-citizen #wikitext-extension-gadget-vscode-insiders a:before,
+.skin-citizen #wikitext-extension-gadget-vscodium a:before {
+	display: block;
+	content: "";
+	width: var( --size-icon );
+	height: var( --size-icon );
+	background: transparent center/contain no-repeat;
+	opacity: var( --opacity-icon-base );
+	filter: var( --filter-invert );
+}
+
+.skin-citizen #wikitext-extension-gadget-vscode a:before,
+.skin-citizen #wikitext-extension-gadget-vscode-insiders a:before {
+	background-image: url( https://media.starcitizen.tools/e/eb/Visual_Studio_Code_-_Simple_Icons.svg );
+}
+
+.skin-citizen #wikitext-extension-gadget-vscodium a:before {
+	background-image: url( https://media.starcitizen.tools/d/de/VS_Codium_-_Simple_Icons.svg );
+}
+/* VECTOR CONFIG*/
+.skin-vector-2022 #wikitext-extension-gadget-vscode,
+.skin-vector-2022 #wikitext-extension-gadget-vscode-insiders,
+.skin-vector-2022 #wikitext-extension-gadget-vscodium {
+	order: 97; /* Before Edit/VisualEditor buttons */
+}
+
+.skin-vector-2022 #wikitext-extension-gadget-vscode a:before,
+.skin-vector-2022 #wikitext-extension-gadget-vscode-insiders a:before,
+.skin-vector-2022 #wikitext-extension-gadget-vscodium a:before {
+	display: block;
+	content: "";
+	width: var( --size-icon );
+	height: var( --size-icon );
+	background: transparent center/contain no-repeat;
+	opacity: var( --opacity-icon-base );
+	filter: var( --filter-invert );
+}

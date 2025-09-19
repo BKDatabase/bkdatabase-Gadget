@@ -4818,7 +4818,7 @@ if(userLang != contentLang) {
 // Beware Uncaught DOMException: Failed to set the 'domain' property on 'Document': 'en.wikipedia.org' is not a suffix of 'en.m.wikipedia.org'.
 if ( window.location.host.indexOf('.m.') === -1 ) {
     // need to set document.domain here, each language should set this field her
-    document.domain = mw.config.get( 'wgServer' ).substring( mw.config.get( 'wgServer' ).lastIndexOf("//")+2);
+    document.domain = mw.config.get('wgServerName' );
 } else {
     // on mobile domain. Avoid
     return;

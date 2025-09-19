@@ -1,0 +1,16 @@
+/**
+ * @brief Highlight redirects
+ * 
+ * @author [[metawikimedia:User:Danny B.]]
+ */
+ 
+.mw-redirect {
+	border-bottom: 1px solid #4DB6B0;
+}
+
+.mw-redirect:before {
+	background-color: #061016;
+	content: "↳";
+	margin-right: .1em;
+	padding: 0 .1em;
+}

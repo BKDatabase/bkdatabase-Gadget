@@ -1,0 +1,21 @@
+/**
+ * On-Wiki calculator script. See [[Template:Calculator]]. Created by [[User:Bawolff]]
+ * License: Creative Commons Attribution-ShareAlike 3.0 and 4.0 International Public License
+ * Canonical source: https://mdwiki.org/wiki/MediaWiki:Gadget-calculator.css
+ */
+
+/* Minerva has some confusing styling of input boxes */
+body.skin-minerva input.calculator-field-live:not(.cdx-text-input__input):not(.cdx-checkbox__input):not(.cdx-radio__input) {
+	background: revert;
+	border: revert;
+}
+
+@media screen {
+	/* Allow people to make fallback content */
+	html.client-js .calculatorgadget-enabled {
+		display: revert !important;
+	}
+	html.client-js .calculatorgadget-fallback {
+		display: none;
+	}
+}

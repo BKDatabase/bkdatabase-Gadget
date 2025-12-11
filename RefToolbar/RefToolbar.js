@@ -1,5 +1,5 @@
 /*jshint smarttabs:true, loopfunc:true,forin:false*/
-/*global mw, $, importScript */
+/*global mw, $ */
 // TODO: make autodate an option in the CiteTemplate object, not a preference
 
 // Global object
@@ -15,12 +15,11 @@ if (typeof CiteTB === 'undefined') {
   };
 }
 
-// Only execute on edit, unless it is a user JS/CSS page
+// Only execute when editing/previewing wikitext pages
 // TODO: Remove tests already done by [[MediaWiki:Gadget-refToolbar.js]]
 if (
-	( mw.config.get('wgAction') === 'edit' || mw.config.get('wgAction') === 'submit' ) &&
-	( ( mw.config.get('wgNamespaceNumber') !== 2 && mw.config.get('wgNamespaceNumber') !== 4 ) ||
-	( mw.config.get('wgPageName').indexOf('.js') === -1 && mw.config.get('wgPageName').indexOf('.css') === -1 ) )
+	['edit', 'submit'].indexOf( mw.config.get('wgAction') ) !== -1 &&
+	mw.config.get('wgPageContentModel') === 'wikitext'
 ) {
 
 // TODO: Move this to [[MediaWiki:Gadget-refToolbarDialogs.css]] and add it to the definition of module 'ext.gadget.refToolbarDialogs'
@@ -33,7 +32,7 @@ mw.util.addCSS(".cite-form-td {"+
 CiteTB.DefaultOptions = {
   "date format" : "<year>-<zmonth>-<zdate>",
   "autodate fields" : [],
-  "months" : ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+  "months" : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   "modal" : true,
   "autoparse" : false,
   "expandtemplates": false
@@ -76,12 +75,12 @@ CiteTB.init = function() {
     var dialogobj = {};
     dialogobj['cite-dialog-'+sform] = {
       resizeme: false,
-      titleMsg: 'cite-dialog-'+sform, 
+      title: mw.message( 'cite-dialog-'+sform ).parse(), 
       id: 'citetoolbar-'+sform,
       init: function() {}, 
       html: tem.getInitial(), 
       dialog: {
-        width:675,
+        width:680,
         open: function() { 
           $(this).html(CiteTB.getOpenTemplate().getForm());
           /** @param {jQuery.Event} e */
@@ -125,7 +124,11 @@ CiteTB.init = function() {
         }
       } 
     };
-    $target.wikiEditor('addDialog', dialogobj);
+    try {
+        $target.wikiEditor('addDialog', dialogobj);
+    } catch (e) {
+        // TypeError: range is null
+    }
     //if (!CiteTB.getOption('modal')) {
       //$('#citetoolbar-'+sform).dialog('option', 'modal', false);
     //}
@@ -136,19 +139,19 @@ CiteTB.init = function() {
     'sections': {
       'cites': { 
         type: 'toolbar', 
-        labelMsg: 'cite-section-label',
+        label: mw.msg( 'cite-section-label' ),
         groups: { 
           'template': {
             tools: {
               'template': {
                 type: 'select',
-                labelMsg: 'cite-template-list',
+                label: mw.msg( 'cite-template-list' ),
                 list: temlist
               } 
             }
           },
           'namedrefs': {
-            labelMsg: 'cite-named-refs-label',
+            label: mw.msg( 'cite-named-refs-label' ),
             tools: {
               'nrefs': {
                 type: 'button',
@@ -159,12 +162,12 @@ CiteTB.init = function() {
                 icon: '//upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nuvola_clipboard_lined.svg/22px-Nuvola_clipboard_lined.svg.png',
                 section: 'cites',
                 group: 'namedrefs',
-                labelMsg: 'cite-named-refs-button'
+                label: mw.msg( 'cite-named-refs-button' )
               }
             }
           },
           'errorcheck': {
-            labelMsg: 'cite-errorcheck-label',
+            label: mw.msg( 'cite-errorcheck-label' ),
             tools: {
               'echeck': {
                 type: 'button',
@@ -175,7 +178,7 @@ CiteTB.init = function() {
                 icon: '//upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Nuvola_apps_korganizer-NO.png/22px-Nuvola_apps_korganizer-NO.png',
                 section: 'cites',
                 group: 'errorcheck',
-                labelMsg: 'cite-errorcheck-button'
+                label: mw.msg( 'cite-errorcheck-button' )
               }
             }
           }
@@ -186,7 +189,7 @@ CiteTB.init = function() {
   
   var defaultdialogs = { 
     'cite-toolbar-errorcheck': {
-      titleMsg: 'cite-errorcheck-label',
+      title: mw.message( 'cite-errorcheck-label' ).parse(),
       id: 'citetoolbar-errorcheck',
       resizeme: false,
       init: function() {},
@@ -215,7 +218,7 @@ CiteTB.init = function() {
       }
     },
     'cite-toolbar-namedrefs': {
-      titleMsg: 'cite-named-refs-title',
+      title: mw.message( 'cite-named-refs-title' ).parse(),
       resizeme: false,
       id: 'citetoolbar-namedrefs',
       html: '<div id="cite-namedref-loading">'+
@@ -249,7 +252,11 @@ CiteTB.init = function() {
     }
   };
   
-  $target.wikiEditor('addDialog', defaultdialogs);
+  try {
+    $target.wikiEditor('addDialog', defaultdialogs);
+  } catch (e) {
+    // error occurred setting up wikieditor.
+  }
   $('#citetoolbar-namedrefs').off('dialogopen');
   if (!CiteTB.getOption('modal')) {
     //$('#citetoolbar-namedrefs').dialog('option', 'modal', false);
@@ -258,17 +265,33 @@ CiteTB.init = function() {
     "display:none !important;"+
     "}");  
   }
-  $target.wikiEditor('addToToolbar', refsection);
+  try {
+    $target.wikiEditor('addToToolbar', refsection);
+  } catch (e) {
+    // error occurred setting up wikieditor.
+  }
 };
 
 // Load local data - messages, cite templates, etc.
 $(document).ready( function() {
   switch( mw.config.get('wgUserLanguage') ) {
-    case 'en': // English
-      importScript('MediaWiki:RefToolbarMessages-en.js');
+    case 'de': // German
+      mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-de.js&action=raw&ctype=text/javascript');
       break;
-    default: // Vietnamese
-      importScript('MediaWiki:RefToolbarMessages-vi.js');
+    case 'vi': // Vietnamese
+      mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-vi.js&action=raw&ctype=text/javascript');
+      break;
+    case 'es': // Español
+      mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-es.js&action=raw&ctype=text/javascript');
+      break;
+    case 'ru': // Russian
+      mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-ru.js&action=raw&ctype=text/javascript');
+      break;
+    case 'fr': // Français
+      mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-fr.js&action=raw&ctype=text/javascript');
+      break;
+    default: // English
+      mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-en.js&action=raw&ctype=text/javascript');
   }
 });
 
@@ -279,13 +302,13 @@ CiteTB.refsLoaded = false;
 // REF FUNCTIONS
 // Actually assemble a ref from user input
 CiteTB.getRef = function(inneronly, forinsert) {
-  var i;
+  var i, j, g, group;
   var template = CiteTB.getOpenTemplate();
   var templatename = template.templatename;
   var res = '';
   var refobj = {'shorttag':false};
   if (!inneronly) {
-    var group = $('#cite-'+CiteTB.escStr(template.shortform)+'-group').val();
+    group = $('#cite-'+CiteTB.escStr(template.shortform)+'-group').val();
     var refname = $('#cite-'+CiteTB.escStr(template.shortform)+'-name').val();
     res += '<ref';
     if (refname) {
@@ -309,7 +332,7 @@ CiteTB.getRef = function(inneronly, forinsert) {
   			var fieldid = fieldname.replace('<N>', i.toString());
   			var field = $('#cite-'+CiteTB.escStr(template.shortform)+'-'+fieldid).val();
   			if (field) {
-  				content+='|'+fieldid+'=';
+  				content+=' |'+fieldid+'=';
   				content+= $.trim(field);
   			}
   		}
@@ -322,7 +345,7 @@ CiteTB.getRef = function(inneronly, forinsert) {
     var fieldname = template.basic[i].field;
     var field = $('#cite-'+CiteTB.escStr(template.shortform)+'-'+fieldname).val();
     if (field) {
-      content+='|'+fieldname+'=';
+      content+=' |'+fieldname+'=';
       content+= $.trim(field);
     }
   }
@@ -334,7 +357,7 @@ CiteTB.getRef = function(inneronly, forinsert) {
       var fieldname = template.extra[i].field;
       var field = $('#cite-'+CiteTB.escStr(template.shortform)+'-'+fieldname).val();
       if (field) {
-        content+='|'+fieldname+'=';
+        content+=' |'+fieldname+'=';
         content+= $.trim(field);
       }
     }
@@ -460,6 +483,15 @@ CiteTB.getPageText = function(callback) {
   }
 };
 
+// Safe version of decodeURIComponent() that doesn't throw exceptions.
+// If the native decodeURIComponent() threw an exception, the original string will be returned.
+CiteTB.safeDecodeURIComponent = function(s) {
+	try {
+		s = decodeURIComponent(s);
+	} catch (e) {}
+	return s;
+};
+
 // Autofill a template from an ID (ISBN, DOI, PMID, URL)
 CiteTB.initAutofill = function() {
   var elemid = $(this).attr('id');
@@ -471,7 +503,10 @@ CiteTB.initAutofill = function() {
   if (!id) {
     return false;
   }
-  var url = '//tools.wmflabs.org/reftoolbar/lookup.php?';
+  var url = '//reftoolbar.toolforge.org/lookup.php?';
+  // Citoid expects minimally encoded input, so do some speculative decoding here to avoid
+  // 404 fetches. https://phabricator.wikimedia.org/T146539
+  id = CiteTB.safeDecodeURIComponent(id);
   url+=autotype+'='+encodeURIComponent(id);
   url+='&template='+encodeURIComponent(tem);
   var s = document.createElement('script');
@@ -559,36 +594,36 @@ CiteTB.autoFill = function(data, template, type) {
 	  }
   }
 
-  if (type === 'pmid' || type === 'doi') {
-    if (data.date && (data.fulldate || !$('.'+cl+'month').length)) {
+  // Format partial dates of the format YYYY-MM, YYYY-MM-XX, or YYYY-MM-DD correctly
+  if ( data.date ) {
+    try {
       var DT = new Date(data.date);
-      var useday = /\d{4}-\d{2}-\d{2}/.test(data.date);
-      var usemonth = /\d{4}-\d{2}/.test(data.date);
-      $('.'+cl+'date').val(CiteTB.formatDate(DT, useday, usemonth));
-    } else if (!data.fulldate && $('.'+cl+'month').length && $('.'+cl+'year').length) {
-      if (data.month) { // lookup.php sets month to false if it isn't provided
-        $('.'+cl+'month').val( CiteTB.getOption('months')[parseInt(data.month)-1] );
+      if ( /^\d{4}-\d{2}(-XX)?$/i.test(data.date) ) {
+        data.date = data.date.replace('-XX','');
+        $('.'+cl+'date').val(CiteTB.formatDate(DT, false, true));
+      } else if ( /^\d{4}-\d{2}-\d{2}?/i.test(data.date) ) {
+        $('.'+cl+'date').val(CiteTB.formatDate(DT, true, true));
+      } else {
+        $('.'+cl+'date').val(data.date);
       }
-      $('.'+cl+'year').val(data.year);
-    } else {
-      $('.'+cl+'date').val(data.date);
-    }
+    } catch (e) {}
+  } else {
+    $('.'+cl+'date').val(data.date);
+  }
+
+  if (type === 'pmid' || type === 'doi') {
     $('.'+cl+'journal').val(data.journal);
     $('.'+cl+'volume').val(data.volume);
     $('.'+cl+'issue').val(data.issue);
     $('.'+cl+'pages').val(data.pages);
+    if (type === 'pmid' && data.doi) {
+      $('.'+cl+'doi').val(data.doi);
+    }
   } else if (type === 'isbn') {
     $('.'+cl+'publisher').val(data.publisher);
     $('.'+cl+'location').val(data.location);
-    $('.'+cl+'year').val(data.year);
     $('.'+cl+'edition').val(data.edition);
   } else if (type === 'url') {
-    if (data.date) {
-  	  var DT = new Date(data.date);
-      var useday = /\d{4}-\d{2}-\d{2}/.test(data.date);
-      var usemonth = /\d{4}-\d{2}/.test(data.date);
-      $('.'+cl+'date').val(CiteTB.formatDate(DT, useday, usemonth));
-    }
     $('.'+cl+'journal').val(data.journal);
     $('.'+cl+'volume').val(data.volume);
     $('.'+cl+'issue').val(data.issue);

@@ -59,7 +59,7 @@
                 action: "query",
                 list: "recentchanges",
                 rcprop: "title|timestamp|sizes|user",
-                rcnamespace: "0|3000",
+                rcnamespace: "0|3000|3002",
                 rclimit: "5",
                 rctype: "edit|new",
                 rcshow: "!bot|!redirect",

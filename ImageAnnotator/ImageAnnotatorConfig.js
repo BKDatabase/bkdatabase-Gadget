@@ -236,7 +236,7 @@
          + mw.config.get('wgArticlePath').replace ('$1', encodeURIComponent(mw.config.get('wgPageName')))
          + '?action=edit">editing this page</a>.</span>'
         ,wpImageAnnotatorCopyright :
-           '<span style="font-size:smaller;">Sau khi ghi chú, ghi chú sẽ được xuất bản theo giấy phép '
+           '<span style="font-size:smaller;">Sau khi thực hiện ghi chú, ghi chú sẽ được xuất bản theo giấy phép '
          + '<a href="//blutigeskareuz.miraheze.org/wiki/BKDatabase:B%E1%BA%A3n_quy%E1%BB%81n/Tuy%C3%AAn_b%E1%BB%91_b%E1%BA%A3n_quy%E1%BB%81n_v%E1%BB%81_Blutiges_Kareuz:_The_Decline_of_The_Millennium">CC-BY-SA-4.0</a>. '
          + 'Xem <a href="//blutigeskareuz.miraheze.org/wiki/BKDatabase:B%E1%BA%A3n_quy%E1%BB%81n">BKDatabase:'
          + 'Bản quyền</a> để tìm hiểu thêm.</span>'

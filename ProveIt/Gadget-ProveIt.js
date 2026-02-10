@@ -15,17 +15,20 @@ function loadProveIt() {
 			'Chú thích báo',
 			'Chú thích thông cáo báo chí',
 			'Chú thích video',
-			'Chú thích web'
+			'Chú thích web',
 		],
-
+        
+        // Citation templates that shouldn't go inside <ref> tags
+		'proveit-templates-noref': [ 'R', 'Sfn', 'Sfnm' ],
+		
 		// Supported namespaces, see https://www.mediawiki.org/wiki/Manual:Namespace_constants
 		'proveit-namespaces': [ 0, 2, 3000, 3002 ],
 
 		// Revision tag defined at Special:Tags
-		'proveit-tag': 'Sửa đổi bằng ProveIt',
+		'proveit-tag': 'ProveIt edit',
 
 		// Automatic edit summary
-		'proveit-summary': 'Sửa đổi tham khảo bằng [[c:Help:Gadget-ProveIt|ProveIt]]',
+		'proveit-summary': 'Sửa đổi tham khảo bằng [[BKDatabase:ProveIt|ProveIt]]',
 	} );
 
 	// Load from the central, global version at MediaWiki.org

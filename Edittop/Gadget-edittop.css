@@ -1,0 +1,18 @@
+/* Không thì liên kết [sửa] sẽ xung đột với màu nền của cờ ngang đầu. */
+body.skin-modern #firstHeading > .mw-editsection > a {
+    color: inherit;
+}
+
+/* @noflip */
+body.ltr h1.firstHeading .mw-editsection-bracket:first-of-type,
+body.rtl h1.firstHeading .mw-editsection-bracket:not(:first-of-type) {
+	margin-right: 0.25em;
+	color: #555;
+}
+
+/* @noflip */
+body.rtl h1.firstHeading .mw-editsection-bracket:first-of-type,
+body.ltr h1.firstHeading .mw-editsection-bracket:not(:first-of-type) {
+	margin-left: 0.25em;
+	color: #555;
+}

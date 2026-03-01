@@ -44,10 +44,12 @@ body.skin-vector-2022.has-bg div.mw-page-container {
 body.skin-vector-2022.has-bg div.vector-header-container .mw-header,
 body.skin-vector-2022.has-bg .mw-body-header,
 body.skin-vector-2022.has-bg .vector-page-toolbar,
+body.skin-vector-2022.has-bg .vector-pinnable-header-label,
 body.skin-vector-2022.has-bg #bodyContent,
 body.skin-vector-2022.has-bg #vector-page-tools-pinned-container,
 body.skin-vector-2022.has-bg #vector-main-menu-pinned-container,
 body.skin-vector-2022.has-bg #vector-toc-pinned-container,
+body.skin-vector-2022.has-bg #vector-page-titlebar .mw-heading1 h1 .mw-heading2 h2 .mw-heading3 h3 .mw-heading4 h4 .mw-heading5 h5 .mw-heading6 h6,
 body.skin-vector-2022.has-bg #vector-appearance-pinned-container {
   background-color: rgba(var(--gadget-bg-color), var(--gadget-bg-opacity));
   backdrop-filter: blur(2px);
@@ -84,6 +86,9 @@ body.skin-vector-2022 #bodyContent {
 body.skin-vector-2022 .vector-pinned-container {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+body.skin-vector-2022 .mw-footer li {
+	background-color: rgba(var(--gadget-bg-color), var(--gadget-bg-opacity), 5);
 }
 body.skin-vector-legacy.has-bg #mw-page-base {
   background: unset;
@@ -124,6 +129,9 @@ body.has-bg .wikitable {
 }
 body.has-bg .catlinks {
   background-color: rgba(var(--gadget-bg-color), var(--gadget-bg-opacity));
+}
+body.skin-vector-legacy .mw-footer li {
+	background-color: rgba(var(--gadget-bg-color), var(--gadget-bg-opacity), 5);
 }
 body.skin-timeless.has-bg #mw-header-container {
   background: rgba(var(--gadget-bg-color), 0.5);

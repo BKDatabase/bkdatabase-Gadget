@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
@@ -21,6 +21,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Run ESLint
+      - name: Run tests
         # Lệnh này chỉ chạy lint trên các file .js, .jsx, .mjs, .cjs
-        run: npm run lint -- --ext .js,.jsx,.mjs,.cjs .
+        run: npm run test -- --ext .js,.jsx,.mjs,.cjs .

@@ -6,7 +6,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "watch": "vite build --watch",
-    "test": "grunt test"
+    "test": "grunt"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

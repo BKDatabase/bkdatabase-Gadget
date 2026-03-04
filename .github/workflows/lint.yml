@@ -9,13 +9,18 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 22
+          cache: npm
+          
       - name: Install dependencies
         run: npm ci
+        
       - name: Run ESLint
         # Lệnh này chỉ chạy lint trên các file .js, .jsx, .mjs, .cjs
         run: npm run lint -- --ext .js,.jsx,.mjs,.cjs .

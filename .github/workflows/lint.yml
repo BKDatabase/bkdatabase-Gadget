@@ -23,4 +23,4 @@ jobs:
         
       - name: Run tests
         # Lệnh này chỉ chạy lint trên các file .js, .jsx, .mjs, .cjs
-        run: npm run test -- --ext .js,.jsx,.mjs,.cjs .
+        run: npm run test

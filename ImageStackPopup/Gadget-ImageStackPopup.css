@@ -1,0 +1,144 @@
+/******************************************************************************/
+/**** THIS PAGE TRACKS [[mw:MediaWiki:Gadget-Global-ImageStackPopup.css]]. PLEASE AVOID EDITING DIRECTLY. 
+/**** EDITS SHOULD BE PROPOSED DIRECTLY to [[mw:MediaWiki:Gadget-Global-ImageStackPopup.css]].
+/**** A BOT WILL RAISE AN EDIT REQUEST IF IT BECOMES DIFFERENT FROM UPSTREAM.
+/******************************************************************************/
+
+@media print {
+	html .ImageStackPopup-play, #ImageStackPopupLoading { display: none }
+}
+
+.ImageStackPopup-viewer {
+	text-align: center;
+}
+
+.ImageStackPopup-caption {
+	margin-top: 0.2em;
+}
+
+.ImageStackPopup-play {
+	font-size: 300%;
+	background-color: rgb( 77, 182, 176);
+	color: white;
+	border-radius: 50%;
+	cursor: pointer;
+	text-align: center;
+	user-select: none;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 70px;
+	height: 70px;
+	display: inline-block;
+	line-height: 1.5;
+	border: 0;
+	padding: 0;
+}
+.ImageStackPopup-play:hover {
+	background-color: rgb( 77, 182, 176 );
+	color: black;
+}
+.ImageStackPopup-play:active {
+	color: red;
+}
+
+.ImageStackPopup-loading {
+	cursor: wait;	
+}
+
+.ImageStackPopupCredit {
+	text-align: right;
+	font-size: small;
+	margin: auto;
+	box-sizing: border-box;
+}
+
+.ImageStackPopupSlider {
+	/* browser support is inconsistent here. we want top to bottom.
+	Standard way is direction: ltr but firefox and not latest but very recent chrome does not support that. so do other direction and rotate it. Hopefully at some point we can change this. */
+	writing-mode: vertical-lr;
+	direction: rtl;
+	appearance: slider-vertical; /* back compat */
+	width: 1em;
+	float: right;
+	transform: rotate(180deg); /* in theory direction is supposed to control this, but it didn't work for me */
+}
+
+.ImageStackPopupImgContainer {
+	text-align: left;
+	margin: auto
+}
+
+#ImageStackPopupLoading {
+	position: fixed;
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+	padding-left: 1em;
+	padding-right: 1em;
+	bottom: 1em;
+	right: 1em;
+	background-color: #fda;
+	border: thin black solid;
+	z-index: 10000;
+}
+
+.ImageStackPopupDialog .ImageStackCounter {
+	writing-mode: vertical-lr;
+	display: flex;
+	justify-content: center;
+	float: right;
+}
+
+
+html .ImageStackPopupDialog .oo-ui-window-body,
+html .ImageStackPopupDialog label {
+  background-color: black;
+  color-scheme: dark; /* especially important for range sliders on safari desktop */
+  color: #4DB6B0;
+}
+
+html .ImageStackPopupDialog .oo-ui-messageDialog-content > .oo-ui-window-foot {
+	outline: none;
+}
+
+.ImageStackPopupDialog .oo-ui-messageDialog-text {
+	box-sizing: border-box;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+@media (max-width: 500px) {
+	.ImageStackPopupCounterHideMobile { display: none }
+	.ImageStackPopupImgContainer { position: relative }
+	.ImageStackPopupDialog .ImageStackCounter {
+		display: block;
+		writing-mode: horizontal-tb;
+		position: absolute;
+		left: 3px;
+		bottom: -1.5em;
+		font-size: smaller;
+		float: none;
+		min-height: 0 !important;
+	}
+	.ImageStackPopupSlider {
+		position: absolute;
+		left: 3px;
+		opacity: 0.5;
+		width: 5px;
+	}
+	.ImageStackPopupSlider:hover, .ImageStackPopupSlider:active {
+		opacity: 0.9;
+	}
+	.ImageStackPopupDialog .oo-ui-messageDialog-text {
+		padding: 1px;
+	}
+	.ImageStackPopupDialog .oo-ui-messageDialog-message {
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+	.ImageStackPopupImgContainer {
+		width: fit-content !important;
+	}
+}

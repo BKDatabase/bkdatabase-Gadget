@@ -290,6 +290,9 @@ $(document).ready( function() {
     case 'fr': // Français
       mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-fr.js&action=raw&ctype=text/javascript');
       break;
+	case 'pl': // Polski
+	  mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-pl.js&action=raw&ctype=text/javascript');
+      break;
     default: // English
       mw.loader.load('/w/index.php?title=MediaWiki:RefToolbarMessages-en.js&action=raw&ctype=text/javascript');
   }

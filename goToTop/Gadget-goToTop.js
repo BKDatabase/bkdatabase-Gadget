@@ -36,6 +36,9 @@ const i18nSource = {
     ja: {
         toTop: "▲ ページの上へ"
     }
+	pl: {
+	    toTop: "▲ Powrót na górę"
+    },
 };
 var i18n = {
 	'en': i18nSource['en'],
@@ -47,7 +50,8 @@ var i18n = {
 	'zh': i18nSource['zh'],
 	'zh-tw': i18nSource['zh-tw'],
 	'yue': i18nSource['yue'],
-	'ja': i18nSource['ja']
+	'ja': i18nSource['ja'],
+	'pl': i18nSource['pl']
 };
 var lang = mw.config.get('wgUserLanguage');
 	var displayInfo = Object.assign(

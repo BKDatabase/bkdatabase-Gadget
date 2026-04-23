@@ -132,14 +132,14 @@
     		'Extended-protection-shackle.svg',
     		i18n.protectionLevelDescriptions.extendedconfirmed
     		);
-    } else if (editProtectionLevel === 'templateeditor') {
+    } else if (editProtectionLevel === 'templateeditor' || createProtectionLevel === 'templateeditor') {
     	mimicIndicator(
     		'protection-templateeditor',
     		i18n.protectionLevelLinks.templateeditor,
     		'Template-protection-shackle-brackets_2.svg',
     		i18n.protectionLevelDescriptions.templateeditor
     		);
-    } else if (editProtectionLevel === 'moderator') {
+    } else if (editProtectionLevel === 'moderator' || createProtectionLevel === 'moderator') {
     	mimicIndicator(
     		'protection-moderator',
     		i18n.protectionLevelLinks.moderator,
@@ -153,7 +153,7 @@
              'Full-protection-shackle.svg',
              i18n.protectionLevelDescriptions.sysop
         );
-    }  else if (editProtectionLevel === 'bureaucrat') {
+    }  else if (editProtectionLevel === 'bureaucrat' || createProtectionLevel === 'bureaucrat') {
     	mimicIndicator(
     		'protection-bureaucrat',
     		 i18n.protectionLevelLinks.bureaucrat,

@@ -6,7 +6,11 @@
         protectionLevelDescriptions: {
         	'user': 'Chỉ thành viên đã đăng ký tài khoản tại dự án này mới có thể sửa đổi.',
             'autoconfirmed': 'Chỉ thành viên đã được tự động xác nhận mới có thể sửa đổi.',
+            'extendedconfirmed': 'Chỉ thành viên đã được xác nhận mở rộng mới có thể sửa đổi',
+            'templateeditor': 'Trang này đã bị khóa và chỉ kỹ thuật viên bản mẫu trở lên mới có thể sửa đổi',
+            'moderator': 'Trang này đã bị khóa và chỉ điều phối viên trở lên mới có thể sửa đổi',
             'sysop': 'Trang này đã bị khóa và chỉ bảo quản viên mới có thể sửa đổi.',
+            'bureaucrat': 'Trang này đã bị khóa và chỉ hành chính viên mới có thể sửa đổi',
             'interface': 'Trang này mặc nhiên bị khóa hẳn vì nó cung cấp mã nền tảng cho dự án.'
         },
         moveProtectionLevelDescriptions: {
@@ -18,7 +22,11 @@
         protectionLevelLinks: {
         	'user': 'BKDatabase:Quy định khóa trang#Khóa thành viên đăng nhập',
             'autoconfirmed': 'BKDatabase:Quy định khóa trang#Khóa tự động xác nhận',
+            'extendedconfirmed': 'BKDatabase:Quy định khóa trang#Khóa mở rộng',
+            'templateeditor': 'BKDatabase:Quy định khóa trang#Khóa bản mẫu',
+            'moderator': 'BKDatabase:Quy định khóa trang#Khóa điều phối viên',
             'sysop': 'BKDatabase:Quy định khóa trang#Khóa bảo quản viên',
+            'bureaucrat': 'BKDatabase:Quy định khóa trang#Khóa hành chính viên',
             'interface': 'BKDatabase:Quy định khóa trang#Khóa hệ thống'
         }
     };
@@ -112,18 +120,46 @@
     }
     else if (editProtectionLevel === 'autoconfirmed' || createProtectionLevel === 'autoconfirmed') {
         mimicIndicator(
-            'protection-semi',
-            i18n.protectionLevelLinks.autoconfirmed,
-            'Semi-protection-shackle.svg',
-            i18n.protectionLevelDescriptions.autoconfirmed
+           'protection-semi',
+           i18n.protectionLevelLinks.autoconfirmed,
+           'Semi-protection-shackle.svg',
+           i18n.protectionLevelDescriptions.autoconfirmed
         );
+    } else if (editProtectionLevel === 'extendedconfirmed' || createProtectionLevel === 'extendedconfirmed') {
+    	mimicIndicator(
+    		'protection-extended',
+    		i18n.protectionLevelLinks.extendedconfirmed,
+    		'Extended-protection-shackle.svg',
+    		i18n.protectionLevelDescriptions.extendedconfirmed
+    		);
+    } else if (editProtectionLevel === 'templateeditor') {
+    	mimicIndicator(
+    		'protection-templateeditor',
+    		i18n.protectionLevelLinks.templateeditor,
+    		'Template-protection-shackle-brackets_2.svg',
+    		i18n.protectionLevelDescriptions.templateeditor
+    		);
+    } else if (editProtectionLevel === 'moderator') {
+    	mimicIndicator(
+    		'protection-moderator',
+    		i18n.protectionLevelLinks.moderator,
+    		'Full-protection-shackle-block.svg',
+    		i18n.protectionLevelDescriptions.moderator
+    		);
     } else if (editProtectionLevel === 'sysop' || createProtectionLevel === 'sysop') {
         mimicIndicator(
-            'protection-full',
-            i18n.protectionLevelLinks.sysop,
-            'Full-protection-shackle.svg',
-            i18n.protectionLevelDescriptions.sysop
+             'protection-full',
+             i18n.protectionLevelLinks.sysop,
+             'Full-protection-shackle.svg',
+             i18n.protectionLevelDescriptions.sysop
         );
+    }  else if (editProtectionLevel === 'bureaucrat') {
+    	mimicIndicator(
+    		'protection-bureaucrat',
+    		 i18n.protectionLevelLinks.bureaucrat,
+    		 'Full-protection-shackle-A.svg',
+    		 i18n.protectionLevelDescriptions.bureaucrat
+    		);
     } else if (moveProtectionLevel) {
         mimicIndicator(
             'protection-move',

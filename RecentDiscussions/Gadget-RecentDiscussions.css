@@ -1,0 +1,135 @@
+/* Mã nguồn được phái sinh từ bản gốc của [[mh:User:CoolMikeHatsune22]] theo giấy phép BSD-3-Clause: https://github.com/ccxtwf/VocaloidLyricsWikiInterfaceCode/blob/main/src/gadgets/moderation/rc-discussion/rc-discussion.less */
+/*
+* Gadget-rc-discussion
+*
+* CSS Variables:
+*   --rc-discussion-container-border-color
+*   --rc-discussion-container-bg-color
+*   --rc-discussion-error-text-color
+*   --rc-discussion-date-group-bg-color
+*   --rc-discussion-date-group-fg-color
+*   --rc-discussion-post-title-bg-color
+*   --rc-discussion-post-title-fg-color
+*/
+#rc-discussion-dropdown {
+  margin-top: 20px;
+}
+#rc-discussion-dropdown .cdx-select-vue {
+  width: 100%;
+}
+#rc-discussion-feeds-articles-container {
+  border: solid 1px var(--rc-discussion-container-border-color, #4DB6B0);
+  background-color: var(--rc-discussion-container-bg-color, #061016);
+  padding: 20px 10px;
+  margin-top: 20px;
+}
+#rc-discussion-feeds-articles .rc-discussion-date-group {
+  padding-bottom: 20px;
+}
+#rc-discussion-feeds-articles .rc-discussion-date {
+  font-size: 1.3em;
+  padding: 10px 0 10px 0;
+  font-weight: bold;
+  background-color: var(--rc-discussion-date-group-bg-color, #061016);
+  color: var(--rc-discussion-date-group-fg-color, #4DB6B0);
+}
+#rc-discussion-feeds-articles article {
+  margin-bottom: 0;
+  line-height: 1.5rem;
+  padding: 20px 20px 5px 20px;
+}
+#rc-discussion-feeds-articles .rc-discussion-error {
+  color: var(--rc-discussion-error-text-color, #a7a7a7);
+  font-size: 0.9rem;
+  font-style: italic;
+  cursor: pointer;
+}
+#rc-discussion-feeds-articles .rc-discussion-feed-comment-summary {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+#rc-discussion-feeds-articles .rc-discussion-feed-user-info {
+  font-size: 0.9rem;
+}
+#rc-discussion-feeds-articles .rc-discussion-feed-post-title {
+  background-color: var(--rc-discussion-post-title-bg-color, #061016);
+  color: var(--rc-discussion-post-title-fg-color, #4DB6B0);
+  padding: 2px 8px;
+}
+#rc-discussion-feeds-articles .rc-discussion-feed-comment-heading {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  border-bottom: solid 1px #4DB6B0;
+}
+#rc-discussion-feeds-articles .rc-discussion-feed-added-comment {
+  line-height: 1.2rem;
+  max-height: 3.6rem;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  width: 100%;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+#rc-discussion-feeds-articles .rc-discussion-feed-timestamp {
+  font-size: 0.9rem;
+  font-style: italic;
+  border-top: solid 1px #4DB6B0;
+  margin-top: 8px;
+}
+#rc-discussion-feeds-articles .rc-discussion-no-data {
+  text-align: center;
+  font-style: italic;
+}
+#rc-discussion-feeds-articles .cdx-progress-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  #rc-discussion-feeds-articles #rc-discussion-dropdown .cdx-field {
+    display: flex;
+  }
+  #rc-discussion-feeds-articles #rc-discussion-dropdown .cdx-label {
+    display: inline-block;
+    width: 300px;
+    flex-shrink: 1;
+  }
+  #rc-discussion-feeds-articles #rc-discussion-dropdown .cdx-field__control {
+    display: inline-block;
+    flex-grow: 2;
+  }
+}
+@media (max-width: 500px) {
+  #rc-discussion-feeds-articles .rc-discussion-feed-added-comment {
+    max-height: 6rem;
+    line-clamp: 5;
+    -webkit-line-clamp: 5;
+  }
+}
+html.theme-dark,
+html.skin-theme-clientpref-night,
+:root.skin-theme-clientpref-night {
+  --rc-discussion-container-border-color: #4DB6B0;
+  --rc-discussion-container-bg-color: #061016;
+  --rc-discussion-error-text-color: #878787;
+  --rc-discussion-date-group-bg-color: #061016;
+  --rc-discussion-date-group-fg-color: #4DB6B0;
+  --rc-discussion-post-title-bg-color: #061016;
+  --rc-discussion-post-title-fg-color: #4DB6B0;
+}
+@media screen and (prefers-color-scheme: dark) {
+  html.skin-theme-clientpref-os,
+  :root.skin-theme-clientpref-os {
+    --rc-discussion-container-border-color: #4DB6B0;
+    --rc-discussion-container-bg-color: #061016;
+    --rc-discussion-error-text-color: #878787;
+    --rc-discussion-date-group-bg-color: #061016;
+    --rc-discussion-date-group-fg-color: #4DB6B0;
+    --rc-discussion-post-title-bg-color: #061016;
+    --rc-discussion-post-title-fg-color: #4DB6B0;
+  }
+}

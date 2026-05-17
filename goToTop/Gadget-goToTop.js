@@ -30,15 +30,21 @@ const i18nSource = {
     "zh-tw": {
     	toTop: "▲ 回到頂部"
     },
+    "zh-hans": {
+    	toTop: "▲ 返回顶部"
+    },
+    "zh-hant": {
+    	toTop: "▲ 回到頂部"
+    },
     yue: {
     	toTop: "▲ 回到頂部"
     },
     ja: {
         toTop: "▲ ページの上へ"
-    }
-	pl: {
-	    toTop: "▲ Powrót na górę"
     },
+    pl: {
+    	toTop: "▲ Powrót na górę"
+    }
 };
 var i18n = {
 	'en': i18nSource['en'],
@@ -49,6 +55,8 @@ var i18n = {
 	'ru': i18nSource['ru'],
 	'zh': i18nSource['zh'],
 	'zh-tw': i18nSource['zh-tw'],
+	'zh-hans': i18nSource['zh-hans'],
+	'zh-hant': i18nSource['zh-hant'],
 	'yue': i18nSource['yue'],
 	'ja': i18nSource['ja'],
 	'pl': i18nSource['pl']

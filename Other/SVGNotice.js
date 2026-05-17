@@ -50,6 +50,18 @@ mw.loader.using('mediawiki.util').then(function () {
       linkText: "ezgif.com/svg-to-png",
       text2: "或其他轉換工具。"
     },
+    'zh-hans': { 
+      title: "SVG 提示",
+      text: "此文件为 SVG。如果无法正确显示，请使用以下工具转换为 PNG：",
+      linkText: "ezgif.com/svg-to-png",
+      text2: "或其他转换工具。"
+    },
+    'zh-hant': { 
+      title: "SVG 提示",
+      text: "此檔案為 SVG。如果無法正確顯示，請使用以下工具轉換為 PNG：",
+      linkText: "ezgif.com/svg-to-png",
+      text2: "或其他轉換工具。"
+    },
     yue: { 
       title: "SVG 提示",
       text: "呢個檔案係 SVG。如果無法正常顯示，可以用以下工具轉換成 PNG：",

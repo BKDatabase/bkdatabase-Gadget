@@ -257,7 +257,7 @@ const MENU_OPTIONS = [
   {
     label: "Tất cả (Không bao gồm Thảo luận Thành viên)",
     frc: "&namespace=3&invert=true",
-    ns: [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 106, 147, 401, 711, 828, 829, 861, 863, 1199, 2901, 2941, 3001, 3003, 5501, 2901]
+    ns: [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 106, 147, 401, 487, 711, 828, 829, 861, 863, 1199, 2901, 2941, 3001, 3003, 5501, 2901]
   },
   {
     label: "Tất cả",
@@ -323,6 +323,11 @@ const MENU_OPTIONS = [
   	label: "Video talk",
   	frc: "&namespace=401",
   	ns: [401]
+  },
+  {
+  	label: "Data talk",
+  	frc: "&namespace=487",
+  	ns: [487]
   },
   {
   	label: "TimedText talk",

@@ -386,7 +386,7 @@ const messages = {
   "rc-discussion--title": "Thảo luận gần đây – $1",
   "rc-discussion--menu-label": "Thảo luận gần đây",
   "rc-discussion--menu-tooltip": "Xem thảo luận gần đây về $1",
-  "rc-discussion--app-overview": "Sử dụng trang này để xem các cuộc thảo luận gần đây trong suốt $1 (tối đa $2 bài đăng cho mỗi khoảng thời gian $3 ngày).",
+  "rc-discussion--app-overview": "Sử dụng trang này để xem các cuộc thảo luận gần đây trong suốt $1 (tối đa $2 cuộc thảo luận cho mỗi khoảng thời gian $3 ngày).",
   "rc-discussion--prompt-filter": "Bộ lọc thảo luận",
   "rc-discussion--prompt-refresh": "Làm mới",
   "rc-discussion--action-new-topic": "đã đăng một chủ đề mới",

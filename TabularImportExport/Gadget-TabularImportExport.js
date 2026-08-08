@@ -501,7 +501,7 @@
 		}
 	}
 
-	if ( mw.config.get( 'wgNamespaceNumber' ) === 486 && mw.config.get( 'wgTitle' ).endsWith( '.tab' ) ) {
+	if ( mw.config.get( 'wgNamespaceNumber' ) === 486 && mw.config.get( 'wgTitle' ).endsWith( '.tab' ) || mw.config.get( 'wgTitle' ).endsWith( '.tabx' ) ) {
 		mw.messages.set( i18n );
 		$.when(
 			mw.loader.using( [

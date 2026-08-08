@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 /**
  * This script provides import and export functionality of CSV and XLSX files
  * into Commons' tabular data sets.
@@ -32,17 +33,15 @@
  * @param mw
  */
 ( function ( $, mw ) {
-
 	const papaScript = mw.loader.getScript( 'https://blutigeskareuz.miraheze.org/w/index.php?title=MediaWiki:PapaParse.js&action=raw&ctype=text/javascript' );
-	const xlsxScript = mw.loader.getScript( 'https://cdn.jsdelivr.net/npm/js-xlsx@0.8.22/dist/xlsx.full.min.js' );
+	// Thay CDN cũ bằng cdnjs bản ổn định hơn của SheetJS (XLSX)
+	const xlsxScript = mw.loader.getScript( 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js' );
 
 	const deepCopy = ( object ) => $.extend( true, {}, object );
 	const deepCopyArray = ( array ) => $.extend( true, [], array );
-
 	const addKeysToSet = ( set, obj ) => {
 		Object.keys( obj ).forEach( ( key ) => set.add( key ) );
 	};
-
 	const isNonNullObject = ( value ) => typeof value === 'object' && value !== null;
 
 	function saveAs( blob, filename ) {
@@ -52,8 +51,6 @@
 		a.href = url;
 		a.download = filename || 'download';
 		document.body.appendChild( a );
-
-		// this makes this function only work when the wrapping code executes immediately
 		a.click();
 		setTimeout( () => {
 			document.body.removeChild( a );
@@ -88,7 +85,6 @@
 
 		install() {
 			this.api = new mw.Api();
-
 			if ( [ 'edit', 'submit' ].includes( mw.config.get( 'wgAction' ) ) ) {
 				this.selectFileWidget = new OO.ui.SelectFileInputWidget( { placeholder: mw.msg( 'gadget-tabular-import-placeholder' ) } );
 				this.selectFileWidget.on( 'change', this.selectFile.bind( this ) );
@@ -98,7 +94,6 @@
 				button1.on( 'click', () => this.fetchData( 'csv' ) );
 				const button2 = new OO.ui.ButtonWidget( { label: mw.msg( 'gadget-tabular-export-excel' ) } );
 				button2.on( 'click', () => this.fetchData( 'excel' ) );
-
 				const layout = new OO.ui.HorizontalLayout( {
 					items: [
 						button1,
@@ -137,7 +132,7 @@
 				titles: mw.config.get( 'wgPageName' )
 			} );
 
-			$.when( apiRequest, papaScript, xlsxScript ).then( ( apiResponse, papaResult, xlsxResult ) => {
+			$.when( apiRequest, papaScript, xlsxScript ).then( ( apiResponse ) => {
 				let jsondata;
 				const query = apiResponse[ 0 ] && apiResponse[ 0 ].query;
 				const page = query && query.pages && query.pages[ 0 ];
@@ -167,7 +162,7 @@
 
 		exportToExcel( jsondata, pageData ) {
 			const workbook = this.convertToExcel( jsondata, pageData );
-			const wopts = { bookType: 'xlsx', bookSST: false, type: 'array', charset:'utf-8', cellDates:true, cellStyles:true };
+			const wopts = { bookType: 'xlsx', bookSST: false, type: 'array', charset: 'utf-8', cellDates: true, cellStyles: true };
 			XLSX.writeFile( workbook, `${ mw.config.get( 'wgTitle' ) }.xlsx`, wopts );
 		}
 
@@ -176,10 +171,11 @@
 			jsondata.schema.fields.forEach( ( element ) => {
 				csvdata.fields.push( element.name );
 			} );
+
 			jsondata.data.forEach( ( row ) => {
 				const rowArray = [];
 				row.forEach( ( xElement, xIndex ) => {
-					if ( jsondata.schema.fields[ xIndex ].type === 'localized' && typeof xElement === 'object' ) {
+					if ( jsondata.schema.fields[ xIndex ].type === 'localized' && typeof xElement === 'object' && xElement !== null ) {
 						rowArray.push( Object.values( xElement )[ 0 ] );
 					} else {
 						rowArray.push( xElement );
@@ -187,6 +183,7 @@
 				} );
 				csvdata.data.push( rowArray );
 			} );
+
 			const csv = Papa.unparse( csvdata );
 			const blob = new Blob( [ csv ], { type: 'text/csv' } );
 			saveAs( blob, `${ mw.config.get( 'wgTitle' ) }.csv` );
@@ -199,21 +196,16 @@
 			const languageCodes = new Set();
 
 			jsondata.schema.fields.forEach( ( field, idx ) => {
-				// Push headers onto the output array
 				dataArray[ 0 ].push( field.name );
-
-				// Collect known language codes
-				if ( field.title && typeof field.title === 'object' ) {
+				// Kiểm tra an toàn trước khi lấy keys
+				if ( isNonNullObject( field.title ) ) {
 					addKeysToSet( languageCodes, field.title );
 				}
-
-				// Find indices of columns with type 'localized'
 				if ( field && field.type === 'localized' ) {
 					localizedIndices.push( idx );
 				}
 			} );
 
-			// Modify the array to get one of the localized values
 			jsondata.data.forEach( ( row ) => {
 				const copyOfRow = deepCopyArray( row );
 				localizedIndices.forEach( ( idx ) => {
@@ -230,72 +222,71 @@
 				.replace( /[/\\*'?[\]:]/g, ' ' )
 				.toLowerCase()
 				.slice( 0, 31 );
-
 			ws[ '!merges' ] = [];
 			wb.SheetNames.push( ws_name );
 			wb.Sheets[ ws_name ] = ws;
-			
-			const copyDataWithReferences = (dataArray, dataSheetName) => {
-				return dataArray.map((row, i) => {
-					return row.map( (cell, j) => {
-						const cellName = XLSX.utils.encode_cell({r:i, c:j});
-						return {f: `'${dataSheetName}'!${cellName}` };
-					});
-				});
+
+			const copyDataWithReferences = ( dArray, dSheetName ) => {
+				return dArray.map( ( row, i ) => {
+					return row.map( ( cell, j ) => {
+						const cellName = XLSX.utils.encode_cell( { r: i, c: j } );
+						return { f: `'${ dSheetName }'!${ cellName }` };
+					} );
+				} );
 			};
 
-			// dataArray is overwritten here repeatedly, but it overrides the same cells
-			// we leave hidden comments to mark cells as type localized, for later.
-			function createTranslatedArrayOfArrays( dataArray, lang ) {
+			// Hàm được sửa lỗi null-check an toàn tại đây
+			function createTranslatedArrayOfArrays( tDataArray, lang ) {
 				jsondata.schema.fields.forEach( ( field, idx ) => {
-					// Push headers onto the output array
-					const firstEntry = Object.entries(field.title)[0];
-					const cellValue = field.title[ lang ] || firstEntry[ 1 ];
-					const cellLanguage = field.title[ lang ] ? lang : firstEntry[ 0 ] || '';
-					const cell = {v: cellValue, c: [ { a: 'localized', t: cellLanguage, hidden: true} ] };
-					dataArray[ 0 ][ idx ] = cell;
+					// An toàn hóa field.title nếu nó là null, undefined hoặc string
+					const titleObj = isNonNullObject( field.title ) ? field.title : {};
+					const entries = Object.entries( titleObj );
+					const firstEntry = entries.length > 0 ? entries[ 0 ] : [ '', field.name || '' ];
+
+					const cellValue = titleObj[ lang ] || firstEntry[ 1 ] || field.name || '';
+					const cellLanguage = titleObj[ lang ] ? lang : ( firstEntry[ 0 ] || '' );
+					const cell = { v: cellValue, c: [ { a: 'localized', t: cellLanguage, hidden: true } ] };
+					tDataArray[ 0 ][ idx ] = cell;
 				} );
 
 				jsondata.data.forEach( ( row, rowIndex ) => {
 					localizedIndices.forEach( ( idx ) => {
-						if ( isNonNullObject( row[ idx ] ) ) {
-							const firstEntry = Object.entries(obj)[0];
-							const cellValue = row[ idx ][ lang ] || firstEntry[ 1 ] || null;
-							const cellLanguage = row[ idx ][ lang ] ? lang : firstEntry[ 0 ] || '';
-							const cell = {v: cellValue, c: [ { a: 'localized', t: cellLanguage, hidden: true } ] };
-							cell.c.hidden = true;
-							dataArray[rowIndex + 1][ idx ] = cell;
+						const cellObj = row[ idx ];
+						if ( isNonNullObject( cellObj ) ) {
+							const entries = Object.entries( cellObj );
+							const firstEntry = entries.length > 0 ? entries[ 0 ] : [ '', '' ];
+
+							const cellValue = cellObj[ lang ] || firstEntry[ 1 ] || null;
+							const cellLanguage = cellObj[ lang ] ? lang : ( firstEntry[ 0 ] || '' );
+							const cell = { v: cellValue, c: [ { a: 'localized', t: cellLanguage, hidden: true } ] };
+							tDataArray[ rowIndex + 1 ][ idx ] = cell;
 						}
 					} );
 				} );
-				return dataArray;
+				return tDataArray;
 			}
 
-			// A copy that refers back to the original sheet name for cell values
 			const dataArrayWithReferences = copyDataWithReferences( dataArray, ws_name );
 
-			// Add copies of the data for each languageCode
 			[ ...languageCodes ].sort().forEach( ( lang ) => {
-				const ws_name = lang;
-				const ws = XLSX.utils.aoa_to_sheet( createTranslatedArrayOfArrays( dataArrayWithReferences, lang ) );
-
-				wb.SheetNames.push( ws_name );
-				wb.Sheets[ ws_name ] = ws;
+				const langSheetName = lang;
+				const langWs = XLSX.utils.aoa_to_sheet( createTranslatedArrayOfArrays( deepCopyArray( dataArrayWithReferences ), lang ) );
+				wb.SheetNames.push( langSheetName );
+				wb.Sheets[ langSheetName ] = langWs;
 			} );
 
-			// Generate links
 			const pageUrl = new URL( mw.config.get( 'wgArticlePath' ).replace( '$1', pageData.title ), window.location );
 			const historyUrl = new URL( mw.config.get( 'wgScript' ), window.location );
 			historyUrl.searchParams.set( 'title', pageData.title );
 			historyUrl.searchParams.set( 'action', 'history' );
 
-			// Save metadata to excel properties
 			wb.Props = {
 				Title: pageData.title,
 				Company: mw.config.get( 'wgSiteName' ),
 				SheetNames: wb.SheetNames,
 				Worksheets: wb.SheetNames.length
 			};
+
 			wb.Custprops = {
 				Revision: pageData.revisions[ 0 ].revid,
 				LastModified: pageData.revisions[ 0 ].timestamp,
@@ -305,9 +296,11 @@
 				LicenseCode: jsondata.license,
 				Software: 'Tabular Import/Export-gadget'
 			};
+
 			for ( const language in jsondata.description ) {
 				wb.Custprops[ `Description.${ language }` ] = jsondata.description[ language ];
 			}
+
 			if ( jsondata.mediaWikiCategories && jsondata.mediaWikiCategories.length > 0 ) {
 				wb.Custprops.MediaWikiCategories = jsondata.mediaWikiCategories.map( ( cat ) => {
 					let str = 'Category:' + cat.name;
@@ -317,19 +310,21 @@
 					return str;
 				} ).join( ', ' );
 			}
+
 			return wb;
 		}
 
 		selectFile() {
 			const selectedFile = this.selectFileWidget.getValue();
+			if ( !selectedFile ) return;
 			const name = selectedFile.name;
 
-			$.when( papaScript, xlsxScript ).then( ( papaResult, xlsxResult ) => {
-				if ( name.endsWith( '.csv' ) || name.endsWith( '.tsv' ) || name.endsWith('.txt') ) {
+			$.when( papaScript, xlsxScript ).then( () => {
+				if ( name.endsWith( '.csv' ) || name.endsWith( '.tsv' ) || name.endsWith( '.txt' ) ) {
 					this.importCSVFile( selectedFile );
 				} else if ( name.endsWith( '.xlsx' ) || name.endsWith( '.xlsb' ) || name.endsWith( '.xls' ) || name.endsWith( '.ods' ) ) {
 					selectedFile.arrayBuffer().then( ( buffer ) => {
-						const workbook = XLSX.read( buffer, { type: 'array', dense:true, charset: 'utf-8' } );
+						const workbook = XLSX.read( buffer, { type: 'array', dense: true, charset: 'utf-8' } );
 						this.importXLSX( workbook );
 					} );
 				} else {
@@ -363,6 +358,7 @@
 					}
 				} );
 			} );
+
 			csvdata.data.forEach( ( row ) => {
 				const columnData = [];
 				csvdata.meta.fields.forEach( ( columnName ) => {
@@ -370,6 +366,7 @@
 				} );
 				jsondata.data.push( columnData );
 			} );
+
 			this.writeTextbox( jsondata );
 		}
 
@@ -384,14 +381,12 @@
 			};
 
 			if ( workbook.Custprops ) {
-				// If the workbook has custom properties, we can use them to fill in some metadata
 				if ( workbook.Custprops.LicenseCode ) {
 					jsondata.license = workbook.Custprops.LicenseCode;
 				}
 				if ( workbook.Custprops.Sources ) {
 					jsondata.sources = workbook.Custprops.Sources;
 				}
-				// Extract language descriptions from keys starting with 'Description.'
 				Object.entries( workbook.Custprops ).forEach( ( [ key, value ] ) => {
 					if ( key.startsWith( 'Description.' ) ) {
 						const lang = key.slice( 'Description.'.length );
@@ -403,7 +398,6 @@
 				} );
 				if ( workbook.Custprops.MediaWikiCategories ) {
 					jsondata.mediaWikiCategories = workbook.Custprops.MediaWikiCategories.split( ', ' ).map( ( catStr ) => {
-						// Remove "Category:" prefix and split by '|'
 						const [ name, sort ] = catStr.replace( /^Category:/, '' ).split( '|' );
 						const category = { name };
 						if ( sort ) {
@@ -414,12 +408,13 @@
 				}
 			}
 
-			/* We only look at the first sheet */
 			const sheet = workbook.Sheets[ workbook.SheetNames[ 0 ] ];
 			const jsonsheet = XLSX.utils.sheet_to_json( sheet, { raw: true, defval: null } );
-			if ( jsonsheet.length < 2 ) {
+
+			if ( jsonsheet.length < 1 ) {
 				return;
 			}
+
 			for ( const header in jsonsheet[ 0 ] ) {
 				jsondata.schema.fields.push( {
 					name: header.replace( /\W/g, '' ),
@@ -441,29 +436,38 @@
 				}
 				jsondata.data.push( rowData );
 			} );
-			
-			if (workbook.SheetNames.length > 1) {
-				workbook.SheetNames.forEach( (name, index) => {
-					if ( workbook.Sheets[name]['!type'] !== undefined ) return;
-					workbook.Sheets[name].forEach( (row, i) => {
-						row.forEach( (cell, j) => {
-							if( cell.c && cell.c[0] && cell.c[0].a === 'localized' && cell.c[0].t === name ) {
+
+			// Sửa lỗi duyệt đa ngôn ngữ sheet: Chuyển sheet thành mảng dữ liệu AOA trước khi duyệt
+			if ( workbook.SheetNames.length > 1 ) {
+				workbook.SheetNames.forEach( ( name ) => {
+					const sheetObj = workbook.Sheets[ name ];
+					if ( !sheetObj || sheetObj[ '!type' ] !== undefined ) return;
+
+					const sheetData = XLSX.utils.sheet_to_json( sheetObj, { header: 1, defval: null } );
+					sheetData.forEach( ( row, i ) => {
+						if ( !Array.isArray( row ) ) return;
+						row.forEach( ( cell, j ) => {
+							if ( cell && typeof cell === 'object' && cell.c && cell.c[ 0 ] && cell.c[ 0 ].a === 'localized' && cell.c[ 0 ].t === name ) {
 								if ( i === 0 ) {
-									if (jsondata.schema.fields[j].title ) {
-										jsondata.schema.fields[j].title[name] = cell.v;
+									if ( jsondata.schema.fields[ j ] && jsondata.schema.fields[ j ].title ) {
+										jsondata.schema.fields[ j ].title[ name ] = cell.v;
 									}
 									return;
 								}
-								if ( typeof jsondata.data[i+1][j] === 'object' ) {
-									jsondata.data[i+1][j][cell.c[0].t] = cell.v;
-								} else {
-									jsondata.data[i+1][j] = { name: cell.v };
+								const targetRowIdx = i - 1;
+								if ( jsondata.data[ targetRowIdx ] ) {
+									if ( typeof jsondata.data[ targetRowIdx ][ j ] === 'object' && jsondata.data[ targetRowIdx ][ j ] !== null ) {
+										jsondata.data[ targetRowIdx ][ j ][ cell.c[ 0 ].t ] = cell.v;
+									} else {
+										jsondata.data[ targetRowIdx ][ j ] = { [ cell.c[ 0 ].t ]: cell.v };
+									}
 								}
-							} 
+							}
 						} );
 					} );
-				});
+				} );
 			}
+
 			this.writeTextbox( jsondata );
 		}
 
@@ -471,7 +475,6 @@
 			const selectFileWidget = this.selectFileWidget;
 			const selectedFile = selectFileWidget && selectFileWidget.getValue ? selectFileWidget.getValue() : { name: '' };
 
-			// Guess the data type, based on the first row of data
 			const firstRow = jsondata.data[ 0 ] || [];
 			firstRow.forEach( ( columnEl, index ) => {
 				if ( typeof columnEl === 'number' ) {
@@ -481,7 +484,6 @@
 				}
 			} );
 
-			// Write some metadata
 			const username = mw.config.get( 'wgUserName' );
 			const formattedUsername = username ?
 				`by ${ mw.config.get( 'wgFormattedNamespaces' )[ mw.config.get( 'wgNamespaceIds' ).user ] }:${ username }` :
@@ -491,17 +493,16 @@
 				description: {
 					en: mw.msg( 'gadget-tabular-description-placeholder' )
 				},
-				sources: mw.msg( 'gadget-tabular-imported-from', selectedFile.name, formattedUsername )
+				sources: mw.msg( 'gadget-tabular-imported-from', selectedFile ? selectedFile.name : '', formattedUsername )
 			};
 
-			/* Merge it */
 			const merged = $.extend( metadata, jsondata );
 			$( '#wpTextbox1' ).textSelection( 'setContents', JSON.stringify( merged, null, '\t' ) );
-			$( '#wpSummary' ).val( mw.msg( 'gadget-tabular-importing-summary', selectedFile.name ) );
+			$( '#wpSummary' ).val( mw.msg( 'gadget-tabular-importing-summary', selectedFile ? selectedFile.name : '' ) );
 		}
 	}
 
-	if ( mw.config.get( 'wgNamespaceNumber' ) === 486 && mw.config.get( 'wgTitle' ).endsWith( '.tab' ) || mw.config.get( 'wgTitle' ).endsWith( '.tabx' ) ) {
+	if ( mw.config.get( 'wgNamespaceNumber' ) === 486 && ( mw.config.get( 'wgTitle' ).endsWith( '.tab' ) || mw.config.get( 'wgTitle' ).endsWith( '.tabx' ) ) ) {
 		mw.messages.set( i18n );
 		$.when(
 			mw.loader.using( [

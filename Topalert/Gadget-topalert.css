@@ -1,0 +1,29 @@
+#mw-echo-close-box {
+	float: right;
+	height: 17px;
+	width: 17px;
+	margin: 10px 13px 0 2px;
+	cursor: pointer;
+}
+
+#mw-echo-sliding-alert {
+	position: fixed;
+	top: 0.5em;
+	z-index: 200;
+	margin: 0 auto;
+	width: 355px;
+	left: 0;
+	right: 0;
+	padding: 0;
+	background-color: #FFD86E;
+	border-radius: 5px;
+}
+
+#mw-echo-alert-text {
+	margin: 0 3em 0 1.4em;
+	font-size: 13px;
+	font-weight: bold;
+	font-family: sans-serif;
+	line-height: 38px;
+	white-space: nowrap;
+}

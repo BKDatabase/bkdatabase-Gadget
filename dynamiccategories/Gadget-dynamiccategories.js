@@ -7,11 +7,11 @@
 */
 
 
-defaultCategoryView = 'Dynamic'; // Choose from 'Classic' , 'Dynamic' or 'Gallery' --- First letter capital, with single quotes
+const defaultCategoryView = 'Dynamic'; // Choose from 'Classic' , 'Dynamic' or 'Gallery' --- First letter capital, with single quotes
 
-galleryCatStyle = 'Compacter'; // 'Normal' , 'Compact' or 'Compacter'
+const galleryCatStyle = 'Compacter'; // 'Normal' , 'Compact' or 'Compacter'
 
-catlistAlphabets = false; // true or false. Whether you want the menu of navigation alphabets above the category list
+const catlistAlphabets = false; // true or false. Whether you want the menu of navigation alphabets above the category list
 
 //---------------------------------------------------------------------------------------------------
 
